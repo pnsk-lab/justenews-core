@@ -1,0 +1,17 @@
+{
+  "imports": {
+    "@ai-sdk/cohere": "npm:@ai-sdk/cohere@^0.0.28",
+    "@ai-sdk/groq": "npm:@ai-sdk/groq@^0.0.3",
+    "@b-fuze/deno-dom": "jsr:@b-fuze/deno-dom@^0.1.48",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
+    "ai": "npm:ai@^3.4.33",
+    "webforai": "npm:webforai@^2.0.1"
+  },
+  "tasks": {
+    "dev": "deno run -A main.ts"
+  },
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true
+  }
+}
