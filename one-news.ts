@@ -36,14 +36,14 @@ const searchFromQueries = async (queries: string[], target: string) => {
     (await generateText({
       model: cohere('command-r'),
       system:
-        `「${target}」についてのニュースを書くのに必要な記事をJSONから3つ選択し、number[]の形のJSONで答えよ。コードブロックで囲まないで。JSON以外の出力禁止。`,
+        `「${target}」についてのニュースを書くのに必要な記事のキーをJSONから3つ選択し、number[]の形のJSONで答えよ。コードブロックで囲まないで。JSON以外の出力禁止。`,
       prompt: JSON.stringify(toPassAI),
       temperature: 1,
     })).text,
   ) as number[]).map((i) => searchedIndex[i]).filter(Boolean)
 
   return {
-    aiChose: choseUrls,
+    aiChose: choseUrls.length === 0 ? [0, 1, 2] : choseUrls,
     random() {
       const result = new Set<string>()
       for (let i = 0; i < 3; i++) {
