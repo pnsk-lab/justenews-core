@@ -1,0 +1,30 @@
+name: Deno
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Target'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Start
+        run: deno task dev "${{ github.event.inputs.name }}"
+        env:
+          GH_TOKEN: ${{secrets.GH_TOKEN}}
+          COHERE_API_KEY: ${{secrets.COHERE_API_KEY}}
+        
