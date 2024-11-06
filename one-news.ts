@@ -32,17 +32,27 @@ const searchFromQueries = async (queries: string[], target: string) => {
     }).sort(() => Math.random() - 0.5),
   )
 
-  const choseUrls = (JSON.parse((await generateText({model: cohere('command-r'),system:`「${target}」についてのニュースを書くのに必要な記事をJSONから3つ選択し、number[]の形のJSONで答えよ。コードブロックで囲まないで。`,prompt: JSON.stringify(toPassAI),temperature: 1,})).text,) as number[]).map((i) => searchedIndex[i]).filter(Boolean)
+  const choseUrls = (JSON.parse(
+    (await generateText({
+      model: cohere('command-r'),
+      system:
+        `「${target}」についてのニュースを書くのに必要な記事をJSONから3つ選択し、number[]の形のJSONで答えよ。コードブロックで囲まないで。JSON以外の出力禁止。`,
+      prompt: JSON.stringify(toPassAI),
+      temperature: 1,
+    })).text,
+  ) as number[]).map((i) => searchedIndex[i]).filter(Boolean)
 
   return {
     aiChose: choseUrls,
     random() {
       const result = new Set<string>()
       for (let i = 0; i < 3; i++) {
-        result.add(searchedIndex[Math.floor(Math.random() * searchedIndex.length)])
+        result.add(
+          searchedIndex[Math.floor(Math.random() * searchedIndex.length)],
+        )
       }
       return [...result]
-    }
+    },
   }
 }
 const markdownNewsFromURLs = async (urls: string[]) => {
@@ -96,11 +106,16 @@ type Searched = Record<string, {
   title: string
   description: string
 }>
-export const writeNews = async (target: string, urls: string[], id?: string) => {
+export const writeNews = async (
+  target: string,
+  urls: string[],
+  id?: string,
+) => {
   console.log('Generate source article...', id)
   const news = await generateText({
     model: cohere('command-r-plus'),
-    system: `"${target}"の観点から3記事を Markdown を使ったニュースとしてまとめて。`,
+    system:
+      `"${target}"の観点から3記事を Markdown を使ったニュースとしてまとめて。`,
     prompt: await markdownNewsFromURLs(urls),
     maxTokens: 2048,
   })

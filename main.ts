@@ -11,6 +11,8 @@ if (!TARGET) {
 
 const searched = await searchWeb(TARGET)
 
+console.log(searched.aiChose, searched.random())
+
 const sources = new Set<string>()
 const newses = await Promise.all([searched.aiChose, searched.random(), searched.random()].map((urls, id) => {
   for (const url of urls) {
